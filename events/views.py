@@ -64,3 +64,17 @@ class RetrieveEventData(APIView):
             return Response(data)
         except Event.DoesNotExist:
             return Response({"message": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class RetrieveEmailTemplate(APIView):
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(id=event_id)
+            email_template = EmailTemplate.objects.get(event_type=event.event_type)
+            data = {
+                "subject": email_template.subject,
+                "body": email_template.template_content,
+            }
+            return Response(data)
+        except (Event.DoesNotExist, EmailTemplate.DoesNotExist):
+            return Response({"message": "Event or email template not found"}, status=status.HTTP_404_NOT_FOUND)

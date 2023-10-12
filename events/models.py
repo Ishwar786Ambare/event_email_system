@@ -15,6 +15,7 @@ class Event(models.Model):
 class EmailTemplate(models.Model):
     event_type = models.CharField(max_length=100)
     template_content = models.TextField()
+    subject = models.CharField(max_length=500)
 
 
 class EmailLog(models.Model):
