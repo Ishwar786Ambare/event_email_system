@@ -22,4 +22,5 @@ from events import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('send-event-emails/', views.SendEmailView.as_view(), name='send-event-emails'),
+    path('retrieve-event-data/<int:event_id>/', views.RetrieveEventData.as_view(), name='retrieve-event-data'),
 ]

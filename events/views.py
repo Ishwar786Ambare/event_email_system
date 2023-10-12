@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -49,3 +50,17 @@ class SendEmailView(APIView):
     def handle_email_error(self, event, error):
         # Log the error and additional information as needed
         EmailLog.objects.create(event=event, status=f'Error sending email to {event.employee.name}: {str(error)}')
+
+
+class RetrieveEventData(APIView):
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(id=event_id)
+            data = {
+                "name": event.employee.name,
+                "event_type": event.event_type.name,
+                "event_date": event.event_date,
+            }
+            return Response(data)
+        except Event.DoesNotExist:
+            return Response({"message": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
